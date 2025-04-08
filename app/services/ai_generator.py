@@ -1,5 +1,5 @@
-
 import openai
+import json
 from app.config import Config
 
 openai.api_key = Config.OPENAI_API_KEY
@@ -21,8 +21,9 @@ class AIGenerator:
             - contactText (brief invitation to contact)
             - companyName (a creative business name)
             - tagline (a short slogan)
+            - templateType (choose from: portfolio, bakery, it, wedding, blog)
             """
-            
+
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -32,65 +33,46 @@ class AIGenerator:
                 temperature=0.7,
                 max_tokens=1000
             )
-            
-            # Extract the JSON content from the response
+
             content_text = response.choices[0].message.content.strip()
-            
-            # Clean the response if needed
+
             if content_text.startswith("```json"):
-                content_text = content_text[7:-3]  # Remove markdown code block markers
-                
-            # Process the text to JSON (in a real system you'd use json.loads with proper error handling)
-            import json
+                content_text = content_text[7:-3]  # Remove markdown markers
+
             try:
                 content = json.loads(content_text)
             except json.JSONDecodeError:
-                # Simplified fallback content
                 content = {
                     "heroTitle": f"Premium {business_type.title()} Services",
                     "heroSubtitle": f"Trusted {business_type} solutions for the {industry} industry",
                     "aboutTitle": "About Us",
                     "aboutContent": f"We are a leading {business_type} specializing in the {industry} industry.",
                     "services": [
-                        {
-                            "title": "Service 1",
-                            "description": "Description of service 1"
-                        },
-                        {
-                            "title": "Service 2",
-                            "description": "Description of service 2"
-                        },
-                        {
-                            "title": "Service 3",
-                            "description": "Description of service 3"
-                        }
+                        {"title": "Service 1", "description": "Description of service 1"},
+                        {"title": "Service 2", "description": "Description of service 2"},
+                        {"title": "Service 3", "description": "Description of service 3"}
                     ],
                     "contactText": "Get in touch with us today",
                     "companyName": f"{industry.title()} {business_type.title()}",
-                    "tagline": f"Excellence in {industry}"
+                    "tagline": f"Excellence in {industry}",
+                    "templateType": "it"
                 }
-                
+
             return content
-            
+
         except Exception as e:
             print(f"Error generating content: {str(e)}")
-            # Return default content on error
             return {
                 "heroTitle": f"Welcome to Our {business_type.title()}",
                 "heroSubtitle": f"Serving the {industry} industry with excellence",
                 "aboutTitle": "About Our Company",
                 "aboutContent": f"We are passionate about providing quality {business_type} services to the {industry} industry.",
                 "services": [
-                    {
-                        "title": "Core Service",
-                        "description": "Our main service offering"
-                    },
-                    {
-                        "title": "Additional Services",
-                        "description": "Supporting services we provide"
-                    }
+                    {"title": "Core Service", "description": "Our main service offering"},
+                    {"title": "Additional Services", "description": "Supporting services we provide"}
                 ],
                 "contactText": "Contact us to learn more",
                 "companyName": f"{industry.title()} Solutions",
-                "tagline": "Your trusted partner"
+                "tagline": "Your trusted partner",
+                "templateType": "it"
             }

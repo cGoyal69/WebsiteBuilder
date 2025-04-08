@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sweet Delights Bakery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff8f0;
+      color: #333;
+    }
+    header {
+      background: #ff7e5f;
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3rem;
+    }
+    nav {
+      background: #ff6b6b;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem;
+      background: #ffe0cc;
+    }
+    .hero img {
+      width: 45%;
+      border-radius: 1rem;
+    }
+    .hero-text {
+      max-width: 45%;
+    }
+    section {
+      padding: 4rem 2rem;
+      background: #fff;
+    }
+    section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .menu {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .item {
+      width: 250px;
+      background: #ffeedd;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .contact-form {
+      max-width: 600px;
+      margin: auto;
+    }
+    .contact-form label {
+      display: block;
+      margin-top: 1rem;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    .contact-form button {
+      margin-top: 1rem;
+      background: #ff6b6b;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sweet Delights Bakery</h1>
+    <p>Baking joy into every bite</p>
+  </header>
+  <nav>
+    <a href="#menu">Menu</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="hero">
+    <div class="hero-text">
+      <h2>Freshly Baked, Just for You!</h2>
+      <p>Explore our delicious variety of cakes, pastries, and breads crafted with love and premium ingredients.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1589308078054-832312bbf3d4" alt="Bakery Showcase" />
+  </div>
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <div class="menu">
+      <div class="item">
+        <h3>Chocolate Cake</h3>
+        <p>Rich, moist, and decadent with silky ganache frosting.</p>
+      </div>
+      <div class="item">
+        <h3>Strawberry Tart</h3>
+        <p>Fresh strawberries layered over vanilla cream and buttery crust.</p>
+      </div>
+      <div class="item">
+        <h3>Sourdough Bread</h3>
+        <p>Perfectly crusty and tangy artisan-style sourdough loaf.</p>
+      </div>
+    </div>
+  </section>
+  <section id="about">
+    <h2>About Us</h2>
+    <p style="max-width: 800px; margin: auto; text-align: center;">At Sweet Delights, baking is our passion. Started in 2015, our bakery quickly became a local favorite for sweet treats and savory bites. We pride ourselves on using organic ingredients, traditional methods, and lots of love.</p>
+  </section>
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-form">
+      <form>
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your Name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Your Email" required>
+
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+  <footer>
+    <p>&copy; 2025 Sweet Delights Bakery. All rights reserved.</p>
+  </footer>
+</body>
+</html>

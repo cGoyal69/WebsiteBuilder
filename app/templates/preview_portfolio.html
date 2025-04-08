@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>John Doe | Portfolio</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background: #fdfdfd;
+      color: #333;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 20px;
+    }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    nav ul li {
+      margin-left: 20px;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://source.unsplash.com/1600x900/?technology,code') no-repeat center center/cover;
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+    .btn {
+      background: #ff6b6b;
+      color: white;
+      padding: 10px 20px;
+      display: inline-block;
+      text-decoration: none;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+    section {
+      padding: 60px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    form input, form textarea {
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    form button {
+      padding: 12px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      background: #222;
+      color: #ddd;
+      padding: 20px 0;
+      text-align: center;
+    }
+    .socials a {
+      color: #ff6b6b;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <h1>John Doe</h1>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h2>Hi, I'm John – a Full-Stack Developer & Designer</h2>
+      <p>I build elegant websites & efficient apps.</p>
+      <a href="#contact" class="btn">Hire Me</a>
+    </div>
+  </section>
+
+  <section id="about" class="container">
+    <h2>About Me</h2>
+    <p>I’m a passionate developer with 5+ years of experience building full-stack solutions. I love solving problems with clean code and great UI/UX.</p>
+  </section>
+
+  <section id="portfolio" class="container">
+    <h2>My Work</h2>
+    <div class="grid">
+      <div class="card"><img src="https://source.unsplash.com/400x300/?website" alt="Work 1"><p>Landing Page</p></div>
+      <div class="card"><img src="https://source.unsplash.com/400x300/?mobile-app" alt="Work 2"><p>Mobile App</p></div>
+      <div class="card"><img src="https://source.unsplash.com/400x300/?dashboard" alt="Work 3"><p>Dashboard UI</p></div>
+    </div>
+  </section>
+
+  <section id="services" class="container">
+    <h2>What I Do</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Frontend Dev</h3>
+        <p>Beautiful and responsive UIs using React and Vue.</p>
+      </div>
+      <div class="card">
+        <h3>Backend Dev</h3>
+        <p>Scalable APIs with Node.js and Python.</p>
+      </div>
+      <div class="card">
+        <h3>UI/UX Design</h3>
+        <p>Pixel-perfect design with Figma & Adobe XD.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="container">
+    <h2>Contact Me</h2>
+    <form>
+      <input type="text" placeholder="Name" required />
+      <input type="email" placeholder="Email" required />
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 John Doe. All rights reserved.</p>
+      <div class="socials">
+        <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

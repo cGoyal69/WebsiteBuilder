@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wedding Bliss</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #fff8f8;
+      color: #4b2e2e;
+    }
+    header {
+      background: url('https://images.unsplash.com/photo-1523779105320-cd55e3f6e434?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 4rem;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .services {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .service {
+      flex: 1;
+      background: #fff0f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    form button {
+      background: #b48a78;
+      color: white;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>John & Emma</h1>
+  <p>You're invited to celebrate our love</p>
+</header>
+
+<section>
+  <h2>Our Story</h2>
+  <p>We met, we laughed, and now we’re saying "I do". Join us as we begin a new chapter of love and togetherness.</p>
+</section>
+
+<section class="services">
+  <div class="service">
+    <img src="https://images.unsplash.com/photo-1520931737572-6b2c1f81a76c?auto=format&fit=crop&w=800&q=80" />
+    <h3>The Ceremony</h3>
+    <p>Join us for a romantic ceremony at the garden venue filled with flowers and joy.</p>
+  </div>
+  <div class="service">
+    <img src="https://images.unsplash.com/photo-1523206489230-c012a713b3c2?auto=format&fit=crop&w=800&q=80" />
+    <h3>The Reception</h3>
+    <p>Dance the night away with us and enjoy the delicious cuisine and beautiful music.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Contact Us</h2>
+  <form>
+    <input type="text" placeholder="Your Name" />
+    <input type="email" placeholder="Your Email" />
+    <textarea rows="4" placeholder="Message"></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+</body>
+</html>
