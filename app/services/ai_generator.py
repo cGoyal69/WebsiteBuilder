@@ -6,28 +6,155 @@ openai.api_key = Config.OPENAI_API_KEY
 
 class AIGenerator:
     @staticmethod
+    def correct_template_type(business_type, original_type):
+        type_map = {
+    # Bakery & Food Businesses
+    "bakery": "bakery",
+    "cake": "bakery",
+    "pastry": "bakery",
+    "cupcake": "bakery",
+    "dessert": "bakery",
+    "confectionery": "bakery",
+    "patisserie": "bakery",
+    "cafe": "bakery",
+    "bistro": "bakery",
+    "coffee": "bakery",
+    "sweet": "bakery",
+    "chocolate": "bakery",
+    "donut": "bakery",
+    "bread": "bakery",
+    "cookie": "bakery",
+    "food truck": "bakery",
+    "catering": "bakery",
+
+    # Wedding & Event Businesses
+    "wedding": "wedding",
+    "event": "wedding",
+    "event planner": "wedding",
+    "decor": "wedding",
+    "florist": "wedding",
+    "bridal": "wedding",
+    "photography": "wedding",
+    "videography": "wedding",
+    "dj": "wedding",
+    "catering services": "wedding",
+    "makeup artist": "wedding",
+    "venue": "wedding",
+    "banquet": "wedding",
+    "invitation": "wedding",
+    "marriage": "wedding",
+    "ceremony": "wedding",
+    "event management": "wedding",
+
+    # Portfolio-based Professionals
+    "portfolio": "portfolio",
+    "freelancer": "portfolio",
+    "developer": "portfolio",
+    "designer": "portfolio",
+    "graphic designer": "portfolio",
+    "photographer": "portfolio",
+    "artist": "portfolio",
+    "illustrator": "portfolio",
+    "videographer": "portfolio",
+    "writer": "portfolio",
+    "copywriter": "portfolio",
+    "editor": "portfolio",
+    "musician": "portfolio",
+    "tattoo artist": "portfolio",
+    "craftsman": "portfolio",
+    "architect": "portfolio",
+    "interior designer": "portfolio",
+    "stylist": "portfolio",
+
+    # Education / Blog
+    "education": "blog",
+    "school": "blog",
+    "college": "blog",
+    "university": "blog",
+    "teacher": "blog",
+    "tutor": "blog",
+    "coaching": "blog",
+    "learning": "blog",
+    "institute": "blog",
+    "course": "blog",
+    "e-learning": "blog",
+    "academy": "blog",
+    "training": "blog",
+    "educator": "blog",
+    "student": "blog",
+    "study": "blog",
+    "professor": "blog",
+    "lecturer": "blog",
+    "knowledge": "blog",
+    "blog": "blog",
+    "newsletter": "blog",
+    "publication": "blog",
+    "personal blog": "blog",
+    "journal": "blog",
+    "content creator": "blog",
+    "writer blog": "blog",
+
+    # IT / Tech / Corporate
+    "it": "it",
+    "tech": "it",
+    "technology": "it",
+    "software": "it",
+    "startup": "it",
+    "saas": "it",
+    "web development": "it",
+    "mobile app": "it",
+    "cloud": "it",
+    "cybersecurity": "it",
+    "consulting": "it",
+    "blockchain": "it",
+    "ai": "it",
+    "artificial intelligence": "it",
+    "machine learning": "it",
+    "data science": "it",
+    "big data": "it",
+    "api": "it",
+    "digital agency": "it",
+    "it services": "it",
+    "networking": "it",
+    "iot": "it",
+    "automation": "it",
+    "robotics": "it",
+    "biotech": "it",
+    "fintech": "it",
+    "cloud services": "it",
+    "hosting": "it",
+    "enterprise": "it"
+}
+
+        for keyword, mapped_type in type_map.items():
+            if keyword in business_type.lower():
+                return mapped_type
+
+        return original_type if original_type in ["portfolio", "bakery", "it", "wedding", "blog"] else "it"
+
+    @staticmethod
     def generate_website_content(business_type, industry):
-        """Generate website content based on business type and industry."""
         try:
-            # Create a prompt for OpenAI
             prompt = f"""
-            Generate website content for a {business_type} in the {industry} industry.
-            Format the response as JSON with the following fields:
-            - heroTitle (catchy headline)
-            - heroSubtitle (brief description)
-            - aboutTitle 
-            - aboutContent (2-3 paragraphs about the business)
-            - services (list of 3-4 services with title and description for each)
-            - contactText (brief invitation to contact)
-            - companyName (a creative business name)
-            - tagline (a short slogan)
-            - templateType (choose from: portfolio, bakery, it, wedding, blog)
-            """
+You are a website content generator. Generate detailed JSON content for a website for a {business_type} in the {industry} industry.
+
+Return the following keys:
+- heroTitle
+- heroSubtitle
+- aboutTitle
+- aboutContent (2-3 paragraphs)
+- services (3-4 services, each with a title and description)
+- contactText
+- companyName
+- tagline
+- templateType: Choose the BEST FIT from ["portfolio", "bakery", "it", "wedding", "blog"] based on business_type. DO NOT default to "it" unless the business is clearly tech-based.
+Respond in strict JSON format only.
+"""
 
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant that generates website content in JSON format."},
+                    {"role": "system", "content": "You are a helpful assistant that generates structured website content."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.7,
@@ -35,13 +162,21 @@ class AIGenerator:
             )
 
             content_text = response.choices[0].message.content.strip()
+            print("GPT Raw Response:\n", content_text)
 
             if content_text.startswith("```json"):
-                content_text = content_text[7:-3]  # Remove markdown markers
+                content_text = content_text[7:-3]
 
             try:
                 content = json.loads(content_text)
             except json.JSONDecodeError:
+                content = {}
+
+            # Ensure templateType is correct
+            content["templateType"] = AIGenerator.correct_template_type(business_type, content.get("templateType", "it"))
+
+            # Fallback defaults if parsing fails
+            if not content:
                 content = {
                     "heroTitle": f"Premium {business_type.title()} Services",
                     "heroSubtitle": f"Trusted {business_type} solutions for the {industry} industry",
@@ -55,7 +190,7 @@ class AIGenerator:
                     "contactText": "Get in touch with us today",
                     "companyName": f"{industry.title()} {business_type.title()}",
                     "tagline": f"Excellence in {industry}",
-                    "templateType": "it"
+                    "templateType": AIGenerator.correct_template_type(business_type, "it")
                 }
 
             return content
@@ -74,5 +209,5 @@ class AIGenerator:
                 "contactText": "Contact us to learn more",
                 "companyName": f"{industry.title()} Solutions",
                 "tagline": "Your trusted partner",
-                "templateType": "it"
+                "templateType": AIGenerator.correct_template_type(business_type, "it")
             }

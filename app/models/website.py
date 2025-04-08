@@ -1,7 +1,6 @@
-
 import datetime
 from bson import ObjectId
-from app import mongo
+from app.db import db
 
 class Website:
     @staticmethod
@@ -17,20 +16,20 @@ class Website:
             "updated_at": datetime.datetime.utcnow()
         }
         
-        result = mongo.db.websites.insert_one(website)
+        result = db.websites.insert_one(website)
         website['_id'] = str(result.inserted_id)
         return website
     
     @staticmethod
     def get_website(website_id):
-        website = mongo.db.websites.find_one({"_id": ObjectId(website_id)})
+        website = db.websites.find_one({"_id": ObjectId(website_id)})
         if website:
             website['_id'] = str(website['_id'])
         return website
     
     @staticmethod
     def get_user_websites(user_id):
-        websites = list(mongo.db.websites.find({"user_id": user_id}))
+        websites = list(db.websites.find({"user_id": user_id}))
         for website in websites:
             website['_id'] = str(website['_id'])
         return websites
@@ -39,7 +38,7 @@ class Website:
     def update_website(website_id, website_data):
         website_data['updated_at'] = datetime.datetime.utcnow()
         
-        result = mongo.db.websites.update_one(
+        result = db.websites.update_one(
             {"_id": ObjectId(website_id)},
             {"$set": website_data}
         )
@@ -50,5 +49,5 @@ class Website:
     
     @staticmethod
     def delete_website(website_id):
-        result = mongo.db.websites.delete_one({"_id": ObjectId(website_id)})
+        result = db.websites.delete_one({"_id": ObjectId(website_id)})
         return result.deleted_count > 0
