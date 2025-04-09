@@ -24,10 +24,13 @@ def create_app(config_class=Config):
     from app.db import init_db
     init_db(app.db)
 
-    # Initialize JWT and CORS
+    # Initialize JWT
     jwt.init_app(app)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+    # Enable CORS with support for credentials
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+
+    # Add security headers
     app.after_request(add_security_headers)
 
     # Register Blueprints

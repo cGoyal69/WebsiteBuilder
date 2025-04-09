@@ -46,58 +46,28 @@
     </div>
 
     <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control" id="description" rows="4" placeholder="Describe your business in one paragraph..." required></textarea>
+    </div>
+
+    <div class="mb-3">
       <label for="business_type" class="form-label">Business Type</label>
-      <input type="text" class="form-control" id="business_type" required />
+      <input type="text" class="form-control" id="business_type" placeholder="e.g., bakery, portfolio, IT, etc." required />
     </div>
 
     <div class="mb-3">
       <label for="industry" class="form-label">Industry</label>
-      <input type="text" class="form-control" id="industry" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="target_audience" class="form-label">Target Audience</label>
-      <input type="text" class="form-control" id="target_audience" />
-    </div>
-
-    <div class="mb-3">
-      <label for="tone_of_voice" class="form-label">Tone of Voice</label>
-      <input type="text" class="form-control" id="tone_of_voice" />
-    </div>
-
-    <div class="mb-3">
-      <label for="color_scheme" class="form-label">Color Scheme</label>
-      <input type="text" class="form-control" id="color_scheme" />
-    </div>
-
-    <div class="mb-3">
-      <label for="preferred_features" class="form-label">Preferred Features (comma-separated)</label>
-      <input type="text" class="form-control" id="preferred_features" />
+      <input type="text" class="form-control" id="industry" placeholder="e.g., Food, Tech, Fashion..." required />
     </div>
 
     <div class="mb-3">
       <label for="location" class="form-label">Location</label>
-      <input type="text" class="form-control" id="location" />
-    </div>
-
-    <div class="mb-3">
-      <label for="year_established" class="form-label">Year Established</label>
-      <input type="text" class="form-control" id="year_established" />
-    </div>
-
-    <div class="mb-3">
-      <label for="unique_selling_points" class="form-label">Unique Selling Points (comma-separated)</label>
-      <input type="text" class="form-control" id="unique_selling_points" />
+      <input type="text" class="form-control" id="location" placeholder="e.g., New York, India" />
     </div>
 
     <div class="mb-3">
       <label for="logo_tagline" class="form-label">Logo Tagline</label>
-      <input type="text" class="form-control" id="logo_tagline" />
-    </div>
-
-    <div class="mb-3">
-      <label for="description" class="form-label">Business Description</label>
-      <textarea class="form-control" id="description" rows="3" placeholder="Tell us about your business..." required></textarea>
+      <input type="text" class="form-control" id="logo_tagline" placeholder="e.g., Crafted with Love" />
     </div>
 
     <button type="submit" class="btn btn-success w-100">🚀 Generate Website</button>
@@ -117,27 +87,18 @@
     document.getElementById("builderForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const form = document.getElementById("builderForm");
+      const name = document.getElementById("name").value;
+      const description = document.getElementById("description").value;
+      const business_type = document.getElementById("business_type").value;
+      const industry = document.getElementById("industry").value;
+      const location = document.getElementById("location").value;
+      const logo_tagline = document.getElementById("logo_tagline").value;
+
       const loading = document.getElementById('loadingDiv');
-      const button = form.querySelector("button");
+      const form = document.getElementById('builderForm');
 
-      button.disabled = true;
+      form.querySelector("button").disabled = true;
       loading.style.display = 'flex';
-
-      const payload = {
-        name: document.getElementById("name").value,
-        business_type: document.getElementById("business_type").value,
-        industry: document.getElementById("industry").value,
-        target_audience: document.getElementById("target_audience").value,
-        tone_of_voice: document.getElementById("tone_of_voice").value,
-        color_scheme: document.getElementById("color_scheme").value,
-        preferred_features: document.getElementById("preferred_features").value.split(',').map(f => f.trim()),
-        location: document.getElementById("location").value,
-        year_established: document.getElementById("year_established").value,
-        unique_selling_points: document.getElementById("unique_selling_points").value.split(',').map(p => p.trim()),
-        logo_tagline: document.getElementById("logo_tagline").value,
-        description: document.getElementById("description").value,
-      };
 
       try {
         const response = await fetch('https://websitebuilder-dt85.onrender.com/api/website/', {
@@ -146,7 +107,14 @@
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({
+            name,
+            description,
+            business_type,
+            industry,
+            location,
+            logo_tagline
+          })
         });
 
         const data = await response.json();
@@ -161,7 +129,7 @@
         alert('Something went wrong while generating your site.');
       } finally {
         loading.style.display = 'none';
-        button.disabled = false;
+        form.querySelector("button").disabled = false;
       }
     });
   </script>
