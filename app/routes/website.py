@@ -135,25 +135,24 @@ def delete_website(website_id):
 @rate_limit(requests_per_minute=5)
 def regenerate_content(website_id):
     current_user_id = get_jwt_identity()
-    
+
     # Verify ownership
     website = Website.get_website(website_id)
     if not website or website['user_id'] != current_user_id:
         return jsonify({"message": "Website not found or access denied"}), 404
-    
+
     # Regenerate content with AI
     content = AIGenerator.generate_website_content(
-        website.get('business_type', ''), 
+        website.get('business_type', ''),
         website.get('industry', '')
     )
-    
-    # Update website with new content
-    website['content'] = content
-    updated_website = Website.update_website(website_id, website)
-    
-    # Invalidate cache for this website
+
+    # Update only the content field
+    updated_website = Website.update_website(website_id, {"content": content})
+
+    # Invalidate cache
     invalidate_cache_for_website(website_id)
-    
+
     return jsonify({
         "message": "Website content regenerated successfully",
         "website": updated_website
