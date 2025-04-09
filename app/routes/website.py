@@ -6,6 +6,7 @@ from app.models.user import User
 from app.services.ai_generator import AIGenerator
 from app.security import rate_limit, validate_website_data
 from app.caching import cache, invalidate_cache_for_website, invalidate_cache_for_user
+from app.services.ai_generator import AIGenerator
 
 website_bp = Blueprint('website', __name__, url_prefix='/api/websites')
 

@@ -6,131 +6,26 @@ openai.api_key = Config.OPENAI_API_KEY
 
 class AIGenerator:
     @staticmethod
-    def correct_template_type(business_type, original_type):
-        type_map = {
-    # Bakery & Food Businesses
-    "bakery": "bakery",
-    "cake": "bakery",
-    "pastry": "bakery",
-    "cupcake": "bakery",
-    "dessert": "bakery",
-    "confectionery": "bakery",
-    "patisserie": "bakery",
-    "cafe": "bakery",
-    "bistro": "bakery",
-    "coffee": "bakery",
-    "sweet": "bakery",
-    "chocolate": "bakery",
-    "donut": "bakery",
-    "bread": "bakery",
-    "cookie": "bakery",
-    "food truck": "bakery",
-    "catering": "bakery",
-
-    # Wedding & Event Businesses
-    "wedding": "wedding",
-    "event": "wedding",
-    "event planner": "wedding",
-    "decor": "wedding",
-    "florist": "wedding",
-    "bridal": "wedding",
-    "photography": "wedding",
-    "videography": "wedding",
-    "dj": "wedding",
-    "catering services": "wedding",
-    "makeup artist": "wedding",
-    "venue": "wedding",
-    "banquet": "wedding",
-    "invitation": "wedding",
-    "marriage": "wedding",
-    "ceremony": "wedding",
-    "event management": "wedding",
-
-    # Portfolio-based Professionals
-    "portfolio": "portfolio",
-    "freelancer": "portfolio",
-    "developer": "portfolio",
-    "designer": "portfolio",
-    "graphic designer": "portfolio",
-    "photographer": "portfolio",
-    "artist": "portfolio",
-    "illustrator": "portfolio",
-    "videographer": "portfolio",
-    "writer": "portfolio",
-    "copywriter": "portfolio",
-    "editor": "portfolio",
-    "musician": "portfolio",
-    "tattoo artist": "portfolio",
-    "craftsman": "portfolio",
-    "architect": "portfolio",
-    "interior designer": "portfolio",
-    "stylist": "portfolio",
-
-    # Education / Blog
-    "education": "blog",
-    "school": "blog",
-    "college": "blog",
-    "university": "blog",
-    "teacher": "blog",
-    "tutor": "blog",
-    "coaching": "blog",
-    "learning": "blog",
-    "institute": "blog",
-    "course": "blog",
-    "e-learning": "blog",
-    "academy": "blog",
-    "training": "blog",
-    "educator": "blog",
-    "student": "blog",
-    "study": "blog",
-    "professor": "blog",
-    "lecturer": "blog",
-    "knowledge": "blog",
-    "blog": "blog",
-    "newsletter": "blog",
-    "publication": "blog",
-    "personal blog": "blog",
-    "journal": "blog",
-    "content creator": "blog",
-    "writer blog": "blog",
-
-    # IT / Tech / Corporate
-    "it": "it",
-    "tech": "it",
-    "technology": "it",
-    "software": "it",
-    "startup": "it",
-    "saas": "it",
-    "web development": "it",
-    "mobile app": "it",
-    "cloud": "it",
-    "cybersecurity": "it",
-    "consulting": "it",
-    "blockchain": "it",
-    "ai": "it",
-    "artificial intelligence": "it",
-    "machine learning": "it",
-    "data science": "it",
-    "big data": "it",
-    "api": "it",
-    "digital agency": "it",
-    "it services": "it",
-    "networking": "it",
-    "iot": "it",
-    "automation": "it",
-    "robotics": "it",
-    "biotech": "it",
-    "fintech": "it",
-    "cloud services": "it",
-    "hosting": "it",
-    "enterprise": "it"
-}
-
-        for keyword, mapped_type in type_map.items():
-            if keyword in business_type.lower():
-                return mapped_type
-
-        return original_type if original_type in ["portfolio", "bakery", "it", "wedding", "blog"] else "it"
+    def generate_website_content(business_type, industry, description, location, logo_tagline):
+        # Dummy response for now
+        return {
+            "hero": {
+                "title": f"Welcome to your {business_type}",
+                "subtitle": f"{description}",
+            },
+            "about": {
+                "title": f"About Our {industry} Work",
+                "content": f"We are located in {location}. Our tagline: {logo_tagline}."
+            },
+            "services": [
+                {"name": "Service 1", "description": "High-quality service 1."},
+                {"name": "Service 2", "description": "Reliable service 2."}
+            ],
+            "contact": {
+                "email": "info@example.com",
+                "phone": "+91-9876543210"
+            }
+        }
 
 @staticmethod
 def generate_website_content(business_type, industry, description="", location="", logo_tagline=""):
