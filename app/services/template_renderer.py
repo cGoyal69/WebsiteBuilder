@@ -22,15 +22,16 @@ class TemplateRenderer:
 
         try:
             return render_template(
-                preview_template,
-                template=template_type,
-                content=content,
-                website=website_data
-            )
-        except Exception:
+            preview_template,
+            template=template_type,
+            content=content,
+            website=website_data
+        )
+        except Exception as e:
+            print(f"⚠️ Failed to render {preview_template}. Falling back to default. Error: {e}")
             return render_template(
-                'preview_default.html',
-                template='default',
-                content=content,
-                website=website_data
-            )
+            'preview_default.html',
+            template='default',
+            content=content,
+            website=website_data
+        )      
