@@ -24,7 +24,7 @@ class AIGenerator:
     def generate_website_content(business_type, industry, description="", location="", logo_tagline=""):
         try:
             prompt = f"""
-You are a professional website content generator. Based on the following business details, generate complete JSON content:
+You are a professional website content generator. Based on the following business details, generate complete JSON content give 2-3 paras where required and dont change name of company, it is decided by user:
 
 Business Type: {business_type}
 Industry: {industry}
