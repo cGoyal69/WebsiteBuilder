@@ -6,29 +6,22 @@ openai.api_key = Config.OPENAI_API_KEY
 
 class AIGenerator:
     @staticmethod
-    def generate_website_content(business_type, industry, description, location, logo_tagline):
-        # Dummy response for now
-        return {
-            "hero": {
-                "title": f"Welcome to your {business_type}",
-                "subtitle": f"{description}",
-            },
-            "about": {
-                "title": f"About Our {industry} Work",
-                "content": f"We are located in {location}. Our tagline: {logo_tagline}."
-            },
-            "services": [
-                {"name": "Service 1", "description": "High-quality service 1."},
-                {"name": "Service 2", "description": "Reliable service 2."}
-            ],
-            "contact": {
-                "email": "info@example.com",
-                "phone": "+91-9876543210"
-            }
+    def correct_template_type(business_type, fallback="it"):
+        mapping = {
+            "portfolio": ["portfolio", "freelancer", "photography", "resume"],
+            "bakery": ["bakery", "cake", "baking", "food"],
+            "it": ["software", "it", "tech", "saas", "web", "development"],
+            "wedding": ["wedding", "event", "planner", "ceremony"],
+            "blog": ["blog", "news", "magazine", "article"]
         }
 
-@staticmethod
-def generate_website_content(business_type, industry, description="", location="", logo_tagline=""):
+        for key, keywords in mapping.items():
+            if any(k in business_type.lower() for k in keywords):
+                return key
+        return fallback
+
+    @staticmethod
+    def generate_website_content(business_type, industry, description="", location="", logo_tagline=""):
         try:
             prompt = f"""
 You are a professional website content generator. Based on the following business details, generate complete JSON content:
@@ -48,9 +41,9 @@ Return a JSON object with the following keys:
 - contactText
 - companyName
 - tagline
-- templateType: Choose one from ["portfolio", "bakery", "it", "wedding", "blog"] that fits best.
+- templateType (one of: portfolio, bakery, it, wedding, blog)
 
-Respond with **valid JSON only**. Do not add code block markers.
+Respond with valid JSON only. No markdown, no explanation, no extra text.
 """
 
             response = openai.ChatCompletion.create(
@@ -64,52 +57,30 @@ Respond with **valid JSON only**. Do not add code block markers.
             )
 
             content_text = response.choices[0].message.content.strip()
-            print("GPT Raw Response:\n", content_text)
 
+            # Parse and clean
             if content_text.startswith("```json"):
-                content_text = content_text[7:-3]
+                content_text = content_text[7:-3].strip()
 
-            try:
-                content = json.loads(content_text)
-            except json.JSONDecodeError:
-                content = {}
-
-            # Ensure templateType is correct
+            content = json.loads(content_text)
             content["templateType"] = AIGenerator.correct_template_type(business_type, content.get("templateType", "it"))
-
-            # Fallback defaults if parsing fails
-            if not content:
-                content = {
-                    "heroTitle": f"Premium {business_type.title()} Services",
-                    "heroSubtitle": f"Trusted {business_type} solutions for the {industry} industry",
-                    "aboutTitle": "About Us",
-                    "aboutContent": f"We are a leading {business_type} specializing in the {industry} industry.",
-                    "services": [
-                        {"title": "Service 1", "description": "Description of service 1"},
-                        {"title": "Service 2", "description": "Description of service 2"},
-                        {"title": "Service 3", "description": "Description of service 3"}
-                    ],
-                    "contactText": "Get in touch with us today",
-                    "companyName": f"{industry.title()} {business_type.title()}",
-                    "tagline": f"Excellence in {industry}",
-                    "templateType": AIGenerator.correct_template_type(business_type, "it")
-                }
 
             return content
 
         except Exception as e:
-            print(f"Error generating content: {str(e)}")
+            print(f"❌ Error generating content: {str(e)}")
             return {
                 "heroTitle": f"Welcome to Our {business_type.title()}",
                 "heroSubtitle": f"Serving the {industry} industry with excellence",
                 "aboutTitle": "About Our Company",
-                "aboutContent": f"We are passionate about providing quality {business_type} services to the {industry} industry.",
+                "aboutContent": f"We provide top-notch {business_type} services in the {industry} space.",
                 "services": [
-                    {"title": "Core Service", "description": "Our main service offering"},
-                    {"title": "Additional Services", "description": "Supporting services we provide"}
+                    {"title": "Consulting", "description": "Expert guidance tailored to your needs"},
+                    {"title": "Implementation", "description": "Full-scale solution deployment"},
+                    {"title": "Support", "description": "Ongoing maintenance and support"}
                 ],
-                "contactText": "Contact us to learn more",
-                "companyName": f"{industry.title()} Solutions",
-                "tagline": "Your trusted partner",
+                "contactText": "Reach out to us for more information.",
+                "companyName": f"{industry.title()} Experts",
+                "tagline": logo_tagline or "Committed to Quality",
                 "templateType": AIGenerator.correct_template_type(business_type, "it")
             }

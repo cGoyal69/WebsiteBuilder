@@ -4,10 +4,7 @@ import os
 class TemplateRenderer:
     @staticmethod
     def get_available_templates():
-        """Return list of available preview templates (preview_*.html) from app/templates directory."""
         template_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates')
-        
-        # List files that match 'preview_<type>.html' format
         return [
             file for file in os.listdir(template_dir)
             if file.startswith('preview_') and file.endswith('.html')
@@ -22,16 +19,14 @@ class TemplateRenderer:
 
         try:
             return render_template(
-            preview_template,
-            template=template_type,
-            content=content,
-            website=website_data
-        )
+                preview_template,
+                content=content,
+                website=website_data
+            )
         except Exception as e:
             print(f"⚠️ Failed to render {preview_template}. Falling back to default. Error: {e}")
             return render_template(
-            'preview_default.html',
-            template='default',
-            content=content,
-            website=website_data
-        )      
+                'preview_default.html',
+                content=content,
+                website=website_data
+            )
