@@ -15,32 +15,39 @@ website_bp = Blueprint('website', __name__, url_prefix='/api/websites')
 def create_website():
     current_user_id = get_jwt_identity()
     data = request.get_json()
-    
+
     if not data:
         return jsonify({"message": "No data provided"}), 400
-    
+
     # Validate input data
     errors = validate_website_data(data)
     if errors:
         return jsonify({"message": "Validation errors", "errors": errors}), 400
-        
-    # Generate AI content if business_type and industry are provided
-    if 'business_type' in data and 'industry' in data:
-        content = AIGenerator.generate_website_content(
-            data['business_type'], 
-            data['industry']
-        )
-        data['content'] = content
-    
-    # Create website in database
+
+    required_fields = ["business_type", "industry", "name", "description"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"message": f"Missing required field: {field}"}), 400
+
+    # Generate AI content
+    content = AIGenerator.generate_website_content(
+        data["business_type"],
+        data["industry"],
+        data["description"],  # Pass this to improve prompt context
+        data.get("location", ""),
+        data.get("logo_tagline", "")
+    )
+    data["content"] = content
+
+    # Create website in DB
     website = Website.create_website(current_user_id, data)
-    
+
     # Associate website with user
-    User.add_website_to_user(current_user_id, website['_id'])
-    
-    # Invalidate any cached website lists for this user
+    User.add_website_to_user(current_user_id, website["_id"])
+
+    # Invalidate user cache
     invalidate_cache_for_user(current_user_id)
-    
+
     return jsonify({
         "message": "Website created successfully",
         "website": website

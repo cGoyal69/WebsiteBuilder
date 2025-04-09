@@ -132,23 +132,30 @@ class AIGenerator:
 
         return original_type if original_type in ["portfolio", "bakery", "it", "wedding", "blog"] else "it"
 
-    @staticmethod
-    def generate_website_content(business_type, industry):
+@staticmethod
+def generate_website_content(business_type, industry, description="", location="", logo_tagline=""):
         try:
             prompt = f"""
-You are a website content generator. Generate detailed JSON content for a website for a {business_type} in the {industry} industry.
+You are a professional website content generator. Based on the following business details, generate complete JSON content:
 
-Return the following keys:
+Business Type: {business_type}
+Industry: {industry}
+Location: {location}
+Description: {description}
+Logo Tagline: {logo_tagline}
+
+Return a JSON object with the following keys:
 - heroTitle
 - heroSubtitle
 - aboutTitle
 - aboutContent (2-3 paragraphs)
-- services (3-4 services, each with a title and description)
+- services (3-4 services with 'title' and 'description')
 - contactText
 - companyName
 - tagline
-- templateType: Choose the BEST FIT from ["portfolio", "bakery", "it", "wedding", "blog"] based on business_type. DO NOT default to "it" unless the business is clearly tech-based.
-Respond in strict JSON format only.
+- templateType: Choose one from ["portfolio", "bakery", "it", "wedding", "blog"] that fits best.
+
+Respond with **valid JSON only**. Do not add code block markers.
 """
 
             response = openai.ChatCompletion.create(
