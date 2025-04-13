@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AI Website Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f0f4f8;
+            min-height: 100vh;
+        }
+        
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .card-header {
+            background: #4a6cf7;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border: none;
+        }
+        
+        .card-header i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-body {
+            padding: 30px;
+        }
+        
+        .btn-primary {
+            background-color: #4a6cf7;
+            border-color: #4a6cf7;
+            padding: 12px;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a5bd9;
+            border-color: #3a5bd9;
+        }
+        
+        .form-control {
+            padding: 12px;
+            border-radius: 6px;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(74, 108, 247, 0.25);
+            border-color: #4a6cf7;
+        }
+        
+        .form-floating label {
+            color: #6a7c92;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+            margin-left: 8px;
+        }
+        
+        .loading-text {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-layer-group"></i>
+                <h2 class="mb-0">AI Website Builder</h2>
+            </div>
+            <div class="card-body">
+                <h3 class="text-center mb-4">Create Your Account</h3>
+                
+                <form id="register-form">
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="name" placeholder="Full Name" required>
+                            <label for="name">Full Name</label>
+                        </div>
+                        <div id="name-error" class="error-message">Please enter your name</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                            <label for="email">Email Address</label>
+                        </div>
+                        <div id="email-error" class="error-message">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div id="password-error" class="error-message">Password must be at least 8 characters</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" required>
+                            <label for="confirm-password">Confirm Password</label>
+                        </div>
+                        <div id="confirm-password-error" class="error-message">Passwords do not match</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 d-flex justify-content-center align-items-center">
+                        <span>Create Account</span>
+                        <span class="spinner-border spinner-border-sm loading-text" role="status" aria-hidden="true"></span>
+                    </button>
+                    
+                    <div id="register-error" class="error-message text-center mt-3"></div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <p class="text-center mb-0">
+                    Already have an account? 
+                    <a href="login.html" class="text-decoration-none fw-bold" style="color: #4a6cf7;">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = "builder.html";
+            }
+            
+            const form = document.getElementById('register-form');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            
+            const nameError = document.getElementById('name-error');
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            const registerError = document.getElementById('register-error');
+            
+            const loadingSpinner = document.querySelector(".loading-text");
+            const registerButton = document.querySelector(".btn-primary span:first-child");
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Reset error messages
+                nameError.style.display = 'none';
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                confirmPasswordError.style.display = 'none';
+                registerError.style.display = 'none';
+                
+                let isValid = true;
+                
+                // Validate name
+                if (nameInput.value.trim() === '') {
+                    nameError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailInput.value)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (passwordInput.value.length < 8) {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password confirmation
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Show loading state
+                    loadingSpinner.style.display = "inline-block";
+                    registerButton.textContent = "Creating account";
+                    document.querySelector(".btn-primary").disabled = true;
+                    
+                    // Prepare data for API request
+                    const userData = {
+                        name: nameInput.value,
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    };
+                    
+                    try {
+                        // Send registration request to the API
+                        const response = await fetch('https://websitebuilder-dt85.onrender.com/api/auth/register', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(userData)
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            // Registration successful
+                            alert('Registration successful! You can now log in.');
+                            window.location.href = 'login.html';
+                        } else {
+                            // Display error message from API
+                            registerError.textContent = data.message || 'Registration failed. Please try again.';
+                            registerError.style.display = 'block';
+                        }
+                    } catch (error) {
+                        // Handle network errors
+                        console.error('Error:', error);
+                        registerError.textContent = 'Connection error. Please try again later.';
+                        registerError.style.display = 'block';
+                    } finally {
+                        // Reset button state
+                        loadingSpinner.style.display = "none";
+                        registerButton.textContent = "Create Account";
+                        document.querySelector(".btn-primary").disabled = false;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
