@@ -1,66 +1,79 @@
-# AI-Driven Website Builder - Deployment Guide
+# AI-Driven Website Builder
 
-This guide explains how to set up and run the AI-Driven Website Builder application.
+An intelligent application that uses AI to generate and customize websites based on business requirements.
 
-## Prerequisites
+## Overview
+
+This AI-Driven Website Builder leverages artificial intelligence to create professional websites tailored to your business needs. Simply provide details about your business, and the application will generate a complete website with appropriate content, design, and structure.
+
+## Features
+
+- **AI-Generated Content**: Automatically create website content based on your business type and industry
+- **Template Selection**: Choose from various professional templates
+- **Easy Customization**: Modify AI-generated content to fit your specific needs
+- **Responsive Design**: All websites are mobile-friendly and work across devices
+- **User Management**: Create an account to save and manage multiple websites
+- **Live Preview**: See changes in real-time as you edit your website
+
+## Getting Started
+
+### Prerequisites
 
 - Python 3.8+
 - MongoDB (local instance or MongoDB Atlas)
 - OpenAI API key
 
-## Setup Steps
+### Installation
 
-### 1. Clone the Repository
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/ai-website-builder.git
+   cd ai-website-builder
+   ```
 
-```bash
-git clone https://github.com/yourusername/ai-website-builder.git
-cd ai-website-builder
-```
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-### 2. Create a Virtual Environment
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+4. Configure environment variables:
+   
+   Create a `.env` file in the project root with:
+   ```
+   SECRET_KEY=your_secret_key
+   JWT_SECRET_KEY=your_jwt_secret
+   MONGO_URI=mongodb://localhost:27017/website_builder
+   OPENAI_API_KEY=your_openai_api_key
+   ```
 
-### 3. Install Dependencies
+5. Start MongoDB (if using locally):
+   ```bash
+   mongod --dbpath /path/to/data/directory
+   ```
 
-```bash
-pip install -r requirements.txt
-```
+6. Run the application:
+   ```bash
+   python run.py
+   ```
 
-### 4. Environment Configuration
+7. Access the application at `http://localhost:5000`
 
-Create a `.env` file in the project root with the following variables:
+## Usage
 
-```
-SECRET_KEY=your_secret_key
-JWT_SECRET_KEY=your_jwt_secret
-MONGO_URI=mongodb://localhost:27017/website_builder
-OPENAI_API_KEY=your_openai_api_key
-```
-
-Replace the placeholder values with your actual configuration.
-
-### 5. Start MongoDB
-
-If using a local MongoDB instance:
-
-```bash
-# Start MongoDB service
-mongod --dbpath /path/to/data/directory
-```
-
-### 6. Run the Application
-
-```bash
-python run.py
-```
-
-The server will start on `http://localhost:5000`.
-
-##Fronten
+1. Register for an account through the `register.html` page
+2. Log in through the `login.html` page
+3. After login, you'll be directed to `builder.html` where you can:
+   - Create a new website
+   - Choose industry and business type
+   - Customize content
+   - Preview your website
+   - Save your work
 
 ## API Endpoints
 
@@ -80,32 +93,43 @@ The server will start on `http://localhost:5000`.
 - `GET /preview/templates` - Get available templates
 - `GET /preview/<website_id>` - Preview a website
 
-## Testing the Application
+## Development
 
-1. Register a new user:
+### Project Structure
+```
+ai-website-builder/
+├── app/
+│   ├── __init__.py
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── static/
+│   └── templates/
+├── config.py
+├── requirements.txt
+└── run.py
+```
+
+### Testing
+
+Run tests using pytest:
 ```bash
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "password123"}'
+pytest
 ```
 
-2. Login to get a token:
-```bash
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "password123"}'
-```
+## Contributing
 
-3. Create a website (using the token):
-```bash
-curl -X POST http://localhost:5000/api/websites/ \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"name": "My First Website", "business_type": "bakery", "industry": "food"}'
-```
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin feature/my-new-feature`
+5. Submit a pull request
 
-4. Preview your website by opening in a browser:
-```
-http://localhost:5000/preview/YOUR_WEBSITE_ID
-```
+## License
 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- OpenAI for providing the AI models
+- Contributors and open-source projects that made this possible
