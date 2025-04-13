@@ -21,11 +21,12 @@ class AIGenerator:
         return fallback
 
     @staticmethod
-    def generate_website_content(business_type, industry, description="", location="", logo_tagline=""):
+    def generate_website_content(name,business_type, industry, description="", location="", logo_tagline=""):
         try:
             prompt = f"""
 You are a professional website content generator. Based on the following business details, generate complete JSON content give 2-3 paras where required and dont change name of company, it is decided by user:
 
+companyName: {name}
 Business Type: {business_type}
 Industry: {industry}
 Location: {location}
@@ -39,7 +40,7 @@ Return a JSON object with the following keys:
 - aboutContent (2-3 paragraphs)
 - services (3-4 services with 'title' and 'description')
 - contactText
-- companyName
+- companyName(same as given in name dont change it a bit )
 - tagline
 - templateType (one of: portfolio, bakery, it, wedding, blog)
 
